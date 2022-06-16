@@ -7,7 +7,7 @@ const data = {
     {
       id: 1,
       fullName: 'John Doe',
-      username: 'johndoe',
+      name: 'johndoe',
       password: 'admin',
       // eslint-disable-next-line global-require
       avatar: require('@/assets/images/avatars/13-small.png'),
@@ -26,7 +26,7 @@ const data = {
     {
       id: 2,
       fullName: 'Jane Doe',
-      username: 'janedoe',
+      name: 'janedoe',
       password: 'client',
       // eslint-disable-next-line global-require
       avatar: require('@/assets/images/avatars/1-small.png'),
@@ -111,14 +111,14 @@ mock.onPost('/jwt/login').reply(async request => {
 })
 
 mock.onPost('/jwt/register').reply(async request => {
-  const { username, email, password } = JSON.parse(request.data)
-
+  const { name, email, password } = JSON.parse(request.data)
   // If not any of data is missing return 400
-  if (!(username && email && password)) return [400]
+  if (!(name && email && password)) return [400]
 
   const options = {
     headers: {'Content-Type': 'application/json'}
   };
+
   const res = await axios.post('/api/register', request.data, options);
 
   if (res.data.status == "success") {

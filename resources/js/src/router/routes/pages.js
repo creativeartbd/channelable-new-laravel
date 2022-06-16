@@ -319,4 +319,18 @@ export default [
       ],
     },
   },
+  {
+    path: '/pages/user-project-product',
+    name: 'page-project-product',
+    component: () => import('@/views/pages/project-product/ProjectSettings.vue'),
+    meta: {
+      breadcrumb: [
+        { title: 'Home', url: '/' },
+        { title: 'Pages' },
+        { title: 'Project & Product', active: true }
+      ],
+      pageTitle: 'Project & Product',
+      rule: 'editor'
+    }
+  },
 ]

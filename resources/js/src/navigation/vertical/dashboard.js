@@ -13,6 +13,11 @@ export default [
         title: 'Analytics',
         route: 'dashboard-analytics',
       },
+      {
+        title: 'Projects',
+        route: 'page-project-product',
+        icon: 'ActivityIcon',
+      },
     ],
   },
 ]

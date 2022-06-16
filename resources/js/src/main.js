@@ -20,6 +20,12 @@ import '@/libs/sweet-alerts'
 import '@/libs/vue-select'
 import '@/libs/tour'
 
+// Vuesax Component Framework
+import Vuesax from 'vuesax'
+import 'material-icons/iconfont/material-icons.css' //Material Icons
+import 'vuesax/dist/vuesax.css' // Vuesax
+Vue.use(Vuesax)
+
 // Axios Mock Adapter
 import '@/@fake-db/db'
 

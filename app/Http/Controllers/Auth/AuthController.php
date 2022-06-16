@@ -9,6 +9,11 @@ use App\Mail\VerificationEmailChanged;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Rules\ValidationRecaptcha;
@@ -57,9 +62,9 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        $isEmailAlreadyInUse = $User::where(['email' => $request->email])->first() != null;
-        $isUsernameAlreadyInUse = $User::where(['name' => $request->name])->first() != null;
-
+        $isEmailAlreadyInUse = User::where(['email' => $request->email])->first() != null;
+        $isUsernameAlreadyInUse = User::where(['name' => $request->name])->first() != null;
+        
         if ($isEmailAlreadyInUse) {
             return response()->json([
                 'status' => 'error',
@@ -79,10 +84,16 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        // try
+        // {
+        //     Mail::to($user->email)->send(new VerificationEmail($user));
+        // }
+        // catch (Exception $e)
+        // {
+            
+        // }
 
-        Mail::to($user->email)->send(new VerificationEmail($user));
-
-        // $token = Auth::login($user);
+        $token = Auth::login($user);
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
