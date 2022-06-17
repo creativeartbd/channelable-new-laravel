@@ -16,14 +16,19 @@ class CreateUsersTable extends Migration
         Schema::create('users', function($table)
         {
             $table->bigIncrements('id');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('email_verification_token');
+            $table->string('email_verification_token')->nullable();
             $table->integer('email_verified')->default(0);
             $table->rememberToken();
+
+            $table->string('lang')->nullable();
+            $table->string('change_password_verified')->nullable();
+            $table->string('change_email_verified')->nullable();
+            $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }
