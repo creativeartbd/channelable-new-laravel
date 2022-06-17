@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,29 +23,34 @@ Route::controller(AuthController::class)->group(function () {
 
 });
         
-Route::group(['middleware' => 'jwt.verify'], function ($router) {
+Route::group([], function ($router) {
 
     //Project
-    Route::post('projects', 'ProjectController@store');
-    Route::get('projects', 'ProjectController@index');
-    Route::get('projects/select/{id}', 'ProjectController@select');
-    Route::get('projects/{id}', 'ProjectController@get');
-    Route::put('projects/update/{id}', 'ProjectController@update');
+    Route::post('projects', [App\Http\Controllers\ProjectController::class, 'store'])->name("store_projects");
+
+    Route::get('projects', [App\Http\Controllers\ProjectController::class, 'index'])->name("get_projects");
+
+    Route::get('projects/select/{id}', [App\Http\Controllers\ProjectController::class, 'select'])->name("projects_select");
+
+    Route::get('projects/{id}', [App\Http\Controllers\ProjectController::class, 'get'])->name("projects_get");
+
+    Route::put('projects/update/{id}', [App\Http\Controllers\ProjectController::class, 'update'])->name("projects_update");
 
     //Countries
-    Route::get('countries', 'CountryController@countries');
+    Route::get('countries', [App\Http\Controllers\CountryController::class, 'countries'])->name("get_countries");
 
     //Currencies
-    Route::get('currencies', 'CurrencyController@currencies');
+    Route::get('currencies', [App\Http\Controllers\CurrencyController::class, 'currencies'])->name("currencies");
 
     //Timezones
-    Route::get('timezones', 'TimezoneController@timezones');
+    Route::get('timezones', [App\Http\Controllers\TimezoneController::class, 'timezones'])->name("timezones");
 
     //Product Import
-    Route::post('xml-import', 'ProductController@xml');
-    Route::post('save-import-data', 'ProductController@save');
+    Route::post('xml-import', [App\Http\Controllers\ProductController::class, 'xml'])->name("xml-import");
+
+    Route::post('save-import-data', [App\Http\Controllers\ProductController::class, 'save'])->name("save-import-data");
 
     //XmlFields Import
-    Route::get('xml-fields', 'XmlFieldController@xmlFields');
+    Route::get('xml-fields', [App\Http\Controllers\XmlFieldController::class, 'xmlFields'])->name("xmlFields");
 
 });

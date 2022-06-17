@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {http} from '@/services/requests'
 import ProjectSettingsGeneral from './ProjectSettingsGeneral.vue'
 import ProjectSettingsInfo from './ProjectSettingsInfo.vue'
 import ProductImport from './ProductImport.vue'
@@ -44,7 +45,7 @@ export default {
 
   methods:{
     getProject() {
-      axios.get('projects/'+localStorage.getItem('selectedProjectId')).then(response => {
+      http.get('projects/'+localStorage.getItem('selectedProjectId')).then(response => {
         console.log(response.data, 12212)
         this.project = response.data
       }).catch(error => {

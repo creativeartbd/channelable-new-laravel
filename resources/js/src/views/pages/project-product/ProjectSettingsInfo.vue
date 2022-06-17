@@ -1,24 +1,24 @@
 <template>
-  <vx-card no-shadow>
+  <vs-card no-shadow>
     <!-- Country -->
     <div class="mt-8">
       <v-select @input="chooseCountry($event)"  placeholder="Country" name="country"  label="country_name"
                 class="w-full mb-4 mt-5"   v-model="projects.country" :options="countries"  v-validate="'required'" ></v-select>
-      <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+      <!-- <span class="text-danger text-sm">{{ errors.first('country') }}</span> -->
     </div>
 
     <!-- Currency -->
     <div class="mt-8">
       <v-select  placeholder="Currencies" name="currency"   label="currency_name" class="w-full mb-4 mt-5"
                  v-model="projects.currency" :options="currencies"  v-validate="'required'" ></v-select>
-      <span class="text-danger text-sm">{{ errors.first('currency') }}</span>
+      <!-- <span class="text-danger text-sm">{{ errors.first('currency') }}</span> -->
     </div>
 
     <!-- Timezone -->
     <div class="mt-8">
       <v-select  placeholder="Timezones"   name="timezones"  label="time_zone" class="w-full mb-4 mt-5"
                  v-model="projects.timezone" :options="timezones"  v-validate="'required'" ></v-select>
-      <span class="text-danger text-sm">{{ errors.first('timezone') }}</span>
+      <!-- <span class="text-danger text-sm">{{ errors.first('timezone') }}</span> -->
     </div>
 
     <!-- Save & Reset Button -->
@@ -26,14 +26,14 @@
       <vs-button class="ml-auto mt-2" @click="updateProjectInfo">Save Changes</vs-button>
       <vs-button class="ml-4 mt-2" type="border" color="warning">Reset</vs-button>
     </div>
-  </vx-card>
+  </vs-card>
 </template>
 
 <script>
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import vSelect from 'vue-select'
-import axios from 'axios'
+import {http} from '@/services/requests'
 
 export default {
   components: {
@@ -62,7 +62,7 @@ export default {
   },
   methods:{
     updateProjectInfo() {
-      axios.put('projects/update/'+localStorage.getItem('selectedProjectId'), {
+      http.put('projects/update/'+localStorage.getItem('selectedProjectId'), {
         country_id:  this.projects.country.id_country,
         currency_id: this.projects.currency.id_currency,
         timezone_id: this.projects.timezone.id_timezone
@@ -80,7 +80,7 @@ export default {
 
     getProject() {
       let _this = this;
-      axios.get('projects/'+localStorage.getItem('selectedProjectId')).then(response => {
+      http.get('projects/'+localStorage.getItem('selectedProjectId')).then(response => {
         _this.countries.forEach(function(entry) {
           if(entry.id_country == response.data.country_id){
             _this.projects.country = entry
@@ -110,8 +110,8 @@ export default {
       this.getCurrencies(event)
     },
 
-    getCountries(code) {
-      axios.get('countries').then(response => {
+    getCountries() {
+      http.get('countries').then(response => {
         this.countries = response.data;
       }).catch(error => {
 
@@ -120,7 +120,7 @@ export default {
 
     getCurrencies(country) {
       let _this = this;
-      axios.get('currencies').then(response => {
+      http.get('currencies').then(response => {
         _this.currencies = response.data;
         response.data.forEach(function(entry) {
           if(entry.state == country.country_name){
@@ -134,7 +134,7 @@ export default {
 
     getTimezones(country) {
       let _this = this;
-      axios.get('timezones').then(response => {
+      http.get('timezones').then(response => {
         _this.timezones = response.data;
         response.data.forEach(function(entry) {
           if(entry.country_code == country.code){

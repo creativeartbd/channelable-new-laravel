@@ -36,6 +36,59 @@ Vue.use(ModalPlugin)
 // Composition API
 Vue.use(VueCompositionAPI)
 
+//BootstrapVue
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// select
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
+
+Vue.component("v-select", vSelect);
+
+
+//sweetalert2
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2);
+
+if(window.location.origin === 'http://gads.advancedplugins.com'){
+  window.apiRoute = 'http://gadslaravel.advancedplugins.com/api/';
+}else if (window.location.origin === 'http://localhost:8080') {
+  window.apiRoute = 'http://localhost:8000/api/';
+}else{
+  window.apiRoute = 'http://localhost:8000/api/';
+}
+
+//Validate
+import * as VeeValidate from 'vee-validate';
+Vue.use(VeeValidate, {
+  errorBagName: 'vErrors'
+})
+
+import VueTour from 'vue-tour'
+Vue.use(VueTour)
+require('vue-tour/dist/vue-tour.css')
+
+// Vuejs - Vue wrapper for hammerjs
+import { VueHammer } from 'vue2-hammer'
+Vue.use(VueHammer)
+
+
+// PrismJS
+import 'prismjs'
+import 'prismjs/themes/prism-tomorrow.css'
+
+
+// Feather font icon
+// require('./assets/css/iconfont.css')
+
 // Feather font icon - For form-wizard
 // * Shall remove it if not using font-icons of feather-icons - For form-wizard
 require('@core/assets/fonts/feather/iconfont.css') // For form-wizard
@@ -46,7 +99,7 @@ require('@resources/scss/core.scss')
 // import assets styles
 require('@resources/assets/scss/style.scss')
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,

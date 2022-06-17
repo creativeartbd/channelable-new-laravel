@@ -1,5 +1,5 @@
 <template>
-  <vx-card no-shadow>
+  <vs-card no-shadow>
     <!-- Info -->
     <vs-input class="w-full mb-base" label-placeholder="Name" v-model="name"></vs-input>
     <vs-input class="w-full mb-base" label-placeholder="Website" v-model="website"></vs-input>
@@ -9,11 +9,11 @@
       <vs-button class="ml-auto mt-2" @click="updateProjectGeneralData">Save Changes</vs-button>
       <vs-button class="ml-4 mt-2" type="border" color="warning">Reset</vs-button>
     </div>
-  </vx-card>
+  </vs-card>
 </template>
 
 <script>
-import axios from 'axios'
+import {http} from '@/services/requests'
 
 export default {
   data () {
@@ -34,7 +34,7 @@ export default {
 
   methods:{
     updateProjectGeneralData() {
-      axios.put('projects/update/'+localStorage.getItem('selectedProjectId'),
+      http.put('projects/update/'+localStorage.getItem('selectedProjectId'),
         {
           name:this.name,
           website:this.website
@@ -51,7 +51,7 @@ export default {
     },
 
     getProject() {
-      axios.get('projects/'+localStorage.getItem('selectedProjectId')).then(response => {
+      http.get('projects/'+localStorage.getItem('selectedProjectId')).then(response => {
         this.name = response.data.name;
         this.website = response.data.website;
       }).catch(error => {
