@@ -330,7 +330,6 @@ export default [
         { title: 'Project & Product', active: true }
       ],
       pageTitle: 'Project & Product',
-      rule: 'editor'
     }
   },
 ]

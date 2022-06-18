@@ -56,27 +56,18 @@
       <b-row>
         <b-col sm="6">
           <b-form-group
-            label="Username"
-            label-for="account-username"
+            label="name"
+            label-for="account-name"
           >
             <b-form-input
-              v-model="optionsLocal.username"
-              placeholder="Username"
-              name="username"
+              v-model="optionsLocal.name"
+              placeholder="name"
+              name="name"
             />
           </b-form-group>
         </b-col>
         <b-col sm="6">
-          <b-form-group
-            label="Name"
-            label-for="account-name"
-          >
-            <b-form-input
-              v-model="optionsLocal.fullName"
-              name="name"
-              placeholder="Name"
-            />
-          </b-form-group>
+          
         </b-col>
         <b-col sm="6">
           <b-form-group
@@ -92,16 +83,7 @@
           </b-form-group>
         </b-col>
         <b-col sm="6">
-          <b-form-group
-            label="Company"
-            label-for="account-company"
-          >
-            <b-form-input
-              v-model="optionsLocal.company"
-              name="company"
-              placeholder="Company name"
-            />
-          </b-form-group>
+          
         </b-col>
 
         <!-- alert -->
@@ -131,6 +113,7 @@
             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
             variant="primary"
             class="mt-2 mr-1"
+            @click.prevent="updateForm"
           >
             Save changes
           </b-button>
@@ -156,6 +139,19 @@ import {
 import Ripple from 'vue-ripple-directive'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
+import {http} from '@/services/requests'
+import { getHomeRouteForLoggedInUser } from '@/auth/utils'
+import jwt from 'jsonwebtoken'
+import useJwt from '@/auth/jwt/useJwt'
+
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
+const jwtConfig = {
+  secret: 'dd5f3089-40c3-403d-af14-d0c228b05cb4',
+  refreshTokenSecret: '7c4c1c50-3230-45bf-9eae-c9b2e401c767',
+  expireTime: '10m',
+  refreshTokenExpireTime: '10m',
+}
 
 export default {
   components: {
@@ -186,13 +182,66 @@ export default {
   },
   data() {
     return {
-      optionsLocal: JSON.parse(JSON.stringify(this.generalData)),
+      optionsLocal: JSON.parse(localStorage.getItem('userData')),
       profileFile: null,
     }
   },
   methods: {
     resetForm() {
-      this.optionsLocal = JSON.parse(JSON.stringify(this.generalData))
+      this.optionsLocal = JSON.parse(localStorage.getItem('userData'))
+    },
+
+    updateForm() {
+      const userData = JSON.parse(localStorage.getItem('userData'))
+      http.post('update', {
+        oldname:  userData.name,
+        name:  this.optionsLocal.name,
+        email:  this.optionsLocal.email,
+      }).then(response => {
+        console.log(response);
+        if (response.data.status != "success")
+        {
+          return;
+        }
+        const user = response.data.user;
+        console.log(user);
+        user.ability = [
+          {
+            action: 'manage',
+            subject: 'all',
+          },
+        ];
+        user.avatar = require('@/assets/images/avatars/13-small.png'),
+        user.role = 'admin',
+        user.extras = {
+          eCommerceCartItemsCount: 5,
+        };
+        const accessToken = jwt.sign({ id: user.id }, jwtConfig.secret, { expiresIn: jwtConfig.expireTime })
+        const refreshToken = jwt.sign({ id: user.id }, jwtConfig.refreshTokenSecret, {
+          expiresIn: jwtConfig.refreshTokenExpireTime,
+        })
+
+        useJwt.setToken(accessToken)
+        useJwt.setRefreshToken(refreshToken)
+        localStorage.setItem('userData', JSON.stringify(user))
+        this.$ability.update(user.ability)
+
+        // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
+        window.location.reload().then(() => {
+          this.$toast({
+            component: ToastificationContent,
+            position: 'top-right',
+            props: {
+              title: `Welcome ${user.name}`,
+              icon: 'CoffeeIcon',
+              variant: 'success',
+              text: `You have successfully updated profile!`,
+            },
+          })
+        })
+      }).catch(error => {
+
+      });
     },
   },
   setup() {

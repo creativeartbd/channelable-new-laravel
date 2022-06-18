@@ -89,6 +89,11 @@ export default [
     icon: 'FileIcon',
     children: [
       {
+        title: 'Projects',
+        route: 'page-project-product',
+        icon: 'ActivityIcon',
+      },
+      {
         title: 'Authentication',
         icon: 'CircleIcon',
         children: [

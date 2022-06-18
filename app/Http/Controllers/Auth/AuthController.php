@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 use App\Models\User;
+use App\Models\PasswordReset;
+
 use App\Http\Controllers\Controller;
 use App\Rules\ValidationRecaptcha;
 
@@ -23,7 +25,6 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
     public function login(Request $request)
@@ -126,4 +127,80 @@ class AuthController extends Controller
         ]);
     }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'oldname' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email',
+        ]);
+
+        
+        if (!User::where(['name' => $request->oldname])->first()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This user does not exist!',
+            ]);
+        }
+
+        $isEmailAlreadyInUse = User::where(['email' => $request->email])->first() != null;
+        $isUsernameAlreadyInUse = User::where(['name' => $request->name])->first() != null;
+        
+        if ($isEmailAlreadyInUse) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This email is already in use.',
+            ]);
+        }
+
+        if ($isUsernameAlreadyInUse) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This Username is already in use.',
+            ]);
+        }
+
+        User::where('name', $request->oldname)->update(['name' => $request->name, 'email' => $request->email]);
+
+        $user = User::where('name', $request->name)->first();
+        return response()->json([
+                'status' => 'success',
+                'user' => $user
+            ]);
+    }
+
+    public function resetpwd(Request $request)
+    {
+        Validator::make($request->all(), [
+            'email' => 'required|string',
+            'password' => 'required|string',
+            'newpassword'   => 'required|min:6|confirmed'
+        ]);
+
+        if (!User::where(['email' => $request->email])->first()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This user does not exist!',
+            ]);
+        }
+        $credentials = $request->only('email', 'password');
+
+        $token = Auth::attempt($credentials);
+        if (!$token) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized',
+            ]);
+        }
+        User::where('email', $request->email)->update(['password' => Hash::make($request->newpassword)]);
+        $user = User::where('email', $request->email)->first();
+        return response()->json([
+            'status' => 'success',
+            'user' => $user,
+            'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
+        ]);
+    }
 }

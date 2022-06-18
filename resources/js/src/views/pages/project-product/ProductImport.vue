@@ -106,10 +106,10 @@
                           <option value="cp1254">Windows-1254</option>
                         </select>
                         <!-- <span class="text-danger text-sm">{{ errors.first('encoding') }}</span> -->
-                        <vs-button ref="loadableButton" style="margin-top: 20px" id="button-with-loading" @click="continueXml" :disabled="!validateForm"
+                        <b-button  v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary" ref="loadableButton" style="margin-top: 20px" id="button-with-loading" @click="continueXml" :disabled="!validateForm"
                                    class="vs-con-loading__container" type="relief">
                           Continue
-                        </vs-button>
+                        </b-button>
                       </div>
                       <div v-if="activeTab == 'mapping'" class="tab-pane show" id="nav-profile"
                            role="tabpanel" aria-labelledby="nav-profile-tab" :class="{ active : activeTab == 'mapping' }">
@@ -429,10 +429,13 @@
 <script>
 
 import axios from 'axios';
+import {
+  BCard, BCardTitle, BCardSubTitle, BCardBody, BCollapse, BButton
+} from 'bootstrap-vue'
 
 export default {
   components: {
-    
+    BButton
   },
   data () {
     return {

@@ -22,85 +22,82 @@
       <!-- Bookmarks Container -->
       <bookmarks />
     </div>
+
     <validation-provider
     #default="{ errors }"
     >
-
-    <div class="px-6 pb-2 mr-5">
+      <b-navbar-nav class="nav align-items-center ml-auto ">
         <b-dropdown
           :text="selectedProject"
           block
           variant="primary"
           class="m-2 button-select-project"
-          menu-class="w-100"
+          menu-class="w-full"
         >
-          <form style="margin-top: -10px;">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control"  @keyup="searchProject" placeholder="Search"
-                 v-model="search"    aria-label="Recipient's username" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="input-group-text" @click="searchProject" type="button"><i class="fa fa-search"></i></button>
-              </div>
-            </div>
-          </form>
-        <b-dropdown-item v-for="item in searchProject"   @click="selectedPro(item)"  :key="item.id" href="#" v-if="searchProject.length">
-          {{ item.name }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </div>
-
-    <div class="px-6 pb-2 mr-5">
-      <vs-button @click="activePrompt = true" class="w-full">Add Project</vs-button>
-      <vs-prompt
-        title="Add Project"
-        accept-text= "Add Project"
-        button-cancel = "border"
-        @cancel="clearFields"
-        @accept="addProject"
-        @close="clearFields"
-        :is-valid="validateForm"
-        :active.sync="activePrompt">
-        <div>
           <form>
-            <div class="vx-row">
-              <div class="vx-col w-full">
-                <vs-input
-                  v-validate="'required'"
-                  name="name"
-                  class="w-full mb-4 mt-5"
-                  placeholder="Name"
-                  v-model="projects.name"
-                  :color="validateForm ? 'success' : 'danger'"
-                />
-                <span class="text-danger text-sm">{{ errors[0] }}</span>
-                <vs-input
-                  @input="checkDomain"
-                  v-validate="{ required: true, regex: /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/ }"
-                  name="website"
-                  class="w-full mb-4 mt-5"
-                  placeholder="Website"
-                  v-model="projects.website"
-                  :color="validateForm ? 'success' : 'danger'" />
-                <span class="text-danger text-sm">{{ errors[0] }}</span>
-
-                <v-select @input="chooseCountry($event)"  placeholder="Country" name="country"  label="country_name"
-                          class="w-full mb-4 mt-5"   v-model="projects.country" :options="countries"  v-validate="'required'" ></v-select>
-                <span class="text-danger text-sm">{{ errors[0] }}</span>
-
-
-                <v-select  placeholder="Currencies" name="currency"   label="currency_name" class="w-full mb-4 mt-5"
-                          v-model="projects.currency" :options="currencies"  v-validate="'required'" ></v-select>
-                <span class="text-danger text-sm">{{ errors[0] }}</span>
-
-                <v-select  placeholder="Timezones"   name="timezones"  label="time_zone" class="w-full mb-4 mt-5"
-                          v-model="projects.timezone" :options="timezones"  v-validate="'required'" ></v-select>
-                <span class="text-danger text-sm">{{ errors[0] }}</span>
+            <div class="input-group">
+              <input type="text" class="form-control"  @keyup="searchProject" placeholder="Search"
+                v-model="search"    aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                <b-button class="input-group-text" @click="searchProject" variant="info" v-ripple.400="'rgba(255, 255, 255, 0.15)'"><i class="fa fa-search"></i></b-button>
               </div>
             </div>
           </form>
-        </div>
-      </vs-prompt>
-    </div>
+          <b-dropdown-item v-for="item in searchProject"   @click="selectedPro(item)"  :key="item.id" href="/pages/user-project-product" v-if="searchProject.length">
+            {{ item.name }}
+          </b-dropdown-item>
+        </b-dropdown>
+
+        <b-button v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary" @click="activePrompt = true" class="w-full">Add Project</b-button>
+        <vs-prompt
+          title="Add Project"
+          accept-text= "Add Project"
+          button-cancel = "border"
+          @cancel="clearFields"
+          @accept="addProject"
+          @close="clearFields"
+          :is-valid="validateForm"
+          :active.sync="activePrompt">
+          <div>
+            <form>
+              <div class="vx-row">
+                <div class="vx-col w-full">
+                  <vs-input
+                    v-validate="'required'"
+                    name="name"
+                    class="w-full mb-4 mt-5"
+                    label-placeholder="Name"
+                    v-model="projects.name"
+                    :color="validateForm ? 'success' : 'danger'"
+                  />
+                  <span class="text-danger text-sm">{{ errors[0] }}</span>
+                  <vs-input
+                    @input="checkDomain"
+                    v-validate="{ required: true, regex: /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/ }"
+                    name="website"
+                    class="w-full mb-4 mt-5"
+                    label-placeholder="Website"
+                    v-model="projects.website"
+                    :color="validateForm ? 'success' : 'danger'" />
+                  <span class="text-danger text-sm">{{ errors[0] }}</span>
+
+                  <v-select @input="chooseCountry($event)" placeholder="Country" name="country"  label="country_name"
+                            class="w-full mb-4 mt-5"   v-model="projects.country" :options="countries"  v-validate="'required'" ></v-select>
+                  <span class="text-danger text-sm">{{ errors[0] }}</span>
+
+                  <v-select  placeholder="Currencies" name="currency" label="currency_name" class="w-full mb-4 mt-5"
+                            v-model="projects.currency" :options="currencies"  v-validate="'required'" ></v-select>
+                  <span class="text-danger text-sm">{{ errors[0] }}</span>
+
+                  <v-select  placeholder="Timezones"   name="timezones"  label="time_zone" class="w-full mb-4 mt-5"
+                            v-model="projects.timezone" :options="timezones"  v-validate="'required'" ></v-select>
+                  <span class="text-danger text-sm">{{ errors[0] }}</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </vs-prompt>
+      </b-navbar-nav>
     </validation-provider>
 
     <b-navbar-nav class="nav align-items-center ml-auto">
@@ -127,7 +124,7 @@ import DarkToggler from './components/DarkToggler.vue'
 import CartDropdown from './components/CartDropdown.vue'
 import NotificationDropdown from './components/NotificationDropdown.vue'
 import UserDropdown from './components/UserDropdown.vue'
-import { BDropdown } from 'bootstrap-vue';
+import { BDropdown, BButton } from 'bootstrap-vue';
 import {http} from '@/services/requests'
 
 export default {
@@ -152,6 +149,7 @@ export default {
   components: {
     BLink,
     BDropdown,
+    BButton,
     // Navbar Components
     BNavbarNav,
     Bookmarks,

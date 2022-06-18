@@ -88,6 +88,7 @@
             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
             variant="primary"
             class="mt-1 mr-1"
+            @click.prevent="updateForm"
           >
             Save changes
           </b-button>
@@ -110,7 +111,18 @@
 import {
   BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BCard, BInputGroup, BInputGroupAppend,
 } from 'bootstrap-vue'
+import {http} from '@/services/requests'
 import Ripple from 'vue-ripple-directive'
+import useJwt from '@/auth/jwt/useJwt'
+import jwt from 'jsonwebtoken'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
+const jwtConfig = {
+  secret: 'dd5f3089-40c3-403d-af14-d0c228b05cb4',
+  refreshTokenSecret: '7c4c1c50-3230-45bf-9eae-c9b2e401c767',
+  expireTime: '10m',
+  refreshTokenExpireTime: '10m',
+}
 
 export default {
   components: {
@@ -157,6 +169,55 @@ export default {
     },
     togglePasswordRetype() {
       this.passwordFieldTypeRetype = this.passwordFieldTypeRetype === 'password' ? 'text' : 'password'
+    },
+    updateForm() {
+      const userData = JSON.parse(localStorage.getItem('userData'))
+      http.post('resetpwd', {
+        email:  userData.email,
+        password: this.passwordValueOld,
+        newpassword:  this.newPasswordValue
+      }).then(response => {
+        console.log(response);
+        if (response.data.status != "success")
+        {
+          return;
+        }
+        const user = response.data.user;
+        console.log(user);
+        user.ability = [
+          {
+            action: 'manage',
+            subject: 'all',
+          },
+        ];
+        user.avatar = require('@/assets/images/avatars/13-small.png'),
+        user.role = 'admin',
+        user.extras = {
+          eCommerceCartItemsCount: 5,
+        };
+        const accessToken = jwt.sign({ id: user.id }, jwtConfig.secret, { expiresIn: jwtConfig.expireTime })
+        const refreshToken = jwt.sign({ id: user.id }, jwtConfig.refreshTokenSecret, {
+          expiresIn: jwtConfig.refreshTokenExpireTime,
+        })
+
+        useJwt.setToken(accessToken)
+        useJwt.setRefreshToken(refreshToken)
+        localStorage.setItem('userData', JSON.stringify(user))
+        this.$ability.update(user.ability)
+
+        this.$toast({
+            component: ToastificationContent,
+            position: 'top-right',
+            props: {
+              title: `Welcome ${user.name}`,
+              icon: 'CoffeeIcon',
+              variant: 'success',
+              text: `You have successfully updated password!`,
+            },
+          })
+      }).catch(error => {
+
+      });
     },
   },
 }

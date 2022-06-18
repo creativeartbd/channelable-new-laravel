@@ -23,8 +23,8 @@
 
     <!-- Save & Reset Button -->
     <div class="flex flex-wrap items-center justify-end">
-      <vs-button class="ml-auto mt-2" @click="updateProjectInfo">Save Changes</vs-button>
-      <vs-button class="ml-4 mt-2" type="border" color="warning">Reset</vs-button>
+      <b-button class="ml-auto mt-2" v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="primary" @click="updateProjectInfo">Save Changes</b-button>
+      <b-button class="ml-4 mt-2" type="border" v-ripple.400="'rgba(255, 255, 255, 0.15)'" variant="warning">Reset</b-button>
     </div>
   </vs-card>
 </template>
@@ -34,11 +34,20 @@ import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import vSelect from 'vue-select'
 import {http} from '@/services/requests'
+import {
+  BCard, BCardTitle, BCardSubTitle, BCardBody, BCollapse, BButton
+} from 'bootstrap-vue'
 
 export default {
   components: {
     flatPickr,
-    vSelect
+    vSelect,
+    BButton,
+    BCard,
+    BCardTitle,
+    BCardSubTitle,
+    BCardBody,
+    BCollapse
   },
   data () {
     return {

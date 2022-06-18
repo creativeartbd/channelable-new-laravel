@@ -345,7 +345,7 @@ export default {
                   component: ToastificationContent,
                   position: 'top-right',
                   props: {
-                    title: `Welcome ${userData.fullName || userData.username}`,
+                    title: `Welcome ${userData.name}`,
                     icon: 'CoffeeIcon',
                     variant: 'success',
                     text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,

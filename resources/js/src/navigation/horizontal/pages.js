@@ -4,6 +4,11 @@ export default [
     icon: 'FileTextIcon',
     children: [
       {
+        title: 'Projects',
+        route: 'page-project-product',
+        icon: 'ActivityIcon',
+      },
+      {
         title: 'Authentication',
         icon: 'LockIcon',
         children: [

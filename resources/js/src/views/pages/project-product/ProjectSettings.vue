@@ -1,22 +1,48 @@
 <template>
-  <vs-tabs :position="isSmallerScreen ? 'top' : 'left'" class="tabs-shadow-none" id="profile-tabs" :key="isSmallerScreen">
+  <b-tabs 
+    vertical
+    content-class="col-12 col-md-9 mt-1 mt-md-0"
+    pills
+    nav-wrapper-class="col-md-3 col-12"
+    id="profile-tabs">
     <!-- GENERAL -->
-    <vs-tab icon-pack="feather" icon="icon-user" :label="!isSmallerScreen ? 'General' : ''">
-      <div class="tab-general md:ml-4 md:mt-0 mt-4 ml-0">
-        <project-settings-general/>
-      </div>
-    </vs-tab>
-    <vs-tab icon-pack="feather" icon="icon-info" :label="!isSmallerScreen ? 'Data settings' : ''">
-      <div class="tab-info md:ml-4 md:mt-0 mt-4 ml-0">
-        <project-settings-info/>
-      </div>
-    </vs-tab>
-    <vs-tab icon-pack="feather" icon="icon-link-2" :label="!isSmallerScreen ? 'Product Import' : ''">
-      <div class="tab-text md:ml-4 md:mt-0 mt-4 ml-0">
-        <product-import/>
-      </div>
-    </vs-tab>
-  </vs-tabs>
+    <b-tab title="General" active>
+       <!-- title -->
+      <template #title>
+        <feather-icon
+          icon="UserIcon"
+          size="18"
+          class="mr-50"
+        />
+        <span class="font-weight-bold">General</span>
+      </template>
+      <project-settings-general/>
+    </b-tab>
+    <b-tab icon-pack="feather" icon="icon-info" title="Data settings">
+       <!-- title -->
+      <template #title>
+        <feather-icon
+          icon="UserIcon"
+          size="18"
+          class="mr-50"
+        />
+        <span class="font-weight-bold">Settings</span>
+      </template>
+      <project-settings-info/>
+    </b-tab>
+    <b-tab icon-pack="feather" icon="icon-link-2" title="Product Import">
+       <!-- title -->
+      <template #title>
+        <feather-icon
+          icon="UserIcon"
+          size="18"
+          class="mr-50"
+        />
+        <span class="font-weight-bold">Import</span>
+      </template>
+      <product-import/>
+    </b-tab>
+  </b-tabs>
 </template>
 
 <script>
@@ -24,17 +50,21 @@ import {http} from '@/services/requests'
 import ProjectSettingsGeneral from './ProjectSettingsGeneral.vue'
 import ProjectSettingsInfo from './ProjectSettingsInfo.vue'
 import ProductImport from './ProductImport.vue'
-import axios from 'axios'
+import { BTabs, BTab, BCardText } from 'bootstrap-vue'
 
 export default {
   components: {
     ProjectSettingsGeneral,
     ProjectSettingsInfo,
     ProductImport,
+    BTabs,
+    BTab,
+    BCardText
   },
   data () {
     return {
       project:{},
+      options: {}
     }
   },
   computed: {
@@ -56,13 +86,18 @@ export default {
 
   mounted () {
     this.getProject()
+  },
+
+   beforeCreate() {
+    this.$http.get('/projects/data').then(res => { this.options = res.data })
   }
+
 }
 </script>
 
 <style lang="scss">
 #profile-tabs {
-  .vs-tabs--content {
+  .b-tabs--content {
     padding: 0;
   }
 }
