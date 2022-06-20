@@ -1,11 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-window.apiUrl = 'http://localhost:8000/api/'
-if(window.location.origin === 'http://gads.advancedplugins.com'){
-  window.apiUrl = 'http://gadslaravel.advancedplugins.com/api/'
-}else if (window.location.origin === 'http://localhost:8080') {
-  window.apiUrl = 'http://localhost:8000/api/'
+if(window.location.origin === 'https://channelable.shibbir.dev'){
+  window.apiUrl = 'https://channelable.shibbir.dev/api/'
+}else if (window.location.origin === 'http://channelable.shibbir.dev') {
+  window.apiUrl = 'http://channelable.shibbir.dev/api/'
 }else{
   window.apiUrl = 'http://localhost:8000/api/'
 }

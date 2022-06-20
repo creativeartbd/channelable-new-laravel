@@ -288,7 +288,8 @@ export default {
 
       captcha: '',
       pleaseTickRecaptcha: true,
-      sitekey: '6Lf6VK0UAAAAAO4SfLRPyvVK4vbaFQDUY9-gO71C'
+      // sitekey: '6Lf6VK0UAAAAAO4SfLRPyvVK4vbaFQDUY9-gO71C'
+      sitekey: '6LcrQYQgAAAAAFE1FKwQHn0V4thwIr2pohqRd1c9'
     }
   },
   computed: {

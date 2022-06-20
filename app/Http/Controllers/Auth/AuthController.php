@@ -143,20 +143,12 @@ class AuthController extends Controller
             ]);
         }
 
-        $isEmailAlreadyInUse = User::where(['email' => $request->email])->first() != null;
-        $isUsernameAlreadyInUse = User::where(['name' => $request->name])->first() != null;
+        $isAlreadyInUse = User::where(['email' => $request->email, 'name' => $request->name])->first() != null;
         
-        if ($isEmailAlreadyInUse) {
+        if ($isAlreadyInUse) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'This email is already in use.',
-            ]);
-        }
-
-        if ($isUsernameAlreadyInUse) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This Username is already in use.',
+                'message' => 'This User is already registered.',
             ]);
         }
 

@@ -140,7 +140,6 @@ import Ripple from 'vue-ripple-directive'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
 import {http} from '@/services/requests'
-import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 import jwt from 'jsonwebtoken'
 import useJwt from '@/auth/jwt/useJwt'
 
