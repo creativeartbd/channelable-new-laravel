@@ -47,13 +47,14 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        
         $project = Project::create([
             'name' => $request->name,
             'website' => $request->website,
-            'country_id' => $request['country']['id_country'],
-            'currency_id' => $request['currency']['id_currency'],
-            'timezone_id' => $request['timezone']['id_timezone'],
-            'token' => Helper::randomToken(),
+            'country_id' => $request->country,
+            'currency_id' => $request->currency,
+            'timezone_id' => $request->timezone,
+            'token' => Helper::randomToken(), 
         ]);
 
         $mysqlServers = MysqlServer::get();
@@ -64,8 +65,10 @@ class ProjectController extends Controller
             $username = $mysqlServer->mysql_user;
             $password = $mysqlServer->mysql_password;
             $db = $mysqlServer->mysql_db_name;
+            $port = $mysqlServer->mysql_port;
+            $servername = "{$servername}:{$port}";
 
-            $conn = new \mysqli($servername, $username, $password, $db);
+            $conn = new \mysqli( $servername, $username, $password, $db );
             $result = $conn->query("SELECT * FROM projects");
 
             $DbConnection[] = [
@@ -84,13 +87,17 @@ class ProjectController extends Controller
             $username = $DbConnectionFirst['username'];
             $password = $DbConnectionFirst['password'];
             $db = $DbConnectionFirst['db'];
-            $countryId = $request['country']['id_country'];
-            $currencyId = $request['currency']['id_currency'];
-            $timezoneId = $request['timezone']['id_timezone'];
-            $conn = new \mysqli($servername, $username, $password, $db);
-            $sql = $conn->query("INSERT INTO projects ('id_project', name, website, language_id,
-                currency_id, timezone_id, token)
-            VALUES ('$project->id', $request->name', '$request->website', '$countryId', '$currencyId', '$timezoneId', '$project->token')");
+            $port = $mysqlServer->mysql_port;
+            $servername = "{$servername}:{$port}";
+
+            $countryId = $request->country;
+            $currencyId = $request->currency;
+            $timezoneId = $request->timezone;
+
+            $conn = new \mysqli( $servername, $username, $password, $db);
+
+            $sql = $conn->query("INSERT INTO projects ( id_project , name, website, country_id, currency_id, timezone_id, token)
+            VALUES ( '$project->id_project', '$request->name', '$request->website', '$countryId', '$currencyId', '$timezoneId', '$project->token' )");
         }
 
         return response()->json(['message' => 'success'], 200);

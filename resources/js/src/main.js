@@ -41,7 +41,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
+    // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -58,18 +58,18 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 Vue.use(VueSweetalert2);
 
-if(window.location.origin === 'http://gads.advancedplugins.com'){
-  window.apiRoute = 'http://gadslaravel.advancedplugins.com/api/';
-}else if (window.location.origin === 'http://localhost:8080') {
-  window.apiRoute = 'http://localhost:8000/api/';
-}else{
-  window.apiRoute = 'http://localhost:8000/api/';
+if (window.location.origin === 'https://channelable.shibbir.dev') {
+    window.apiRoute = 'https://channelable.shibbir.dev/api/';
+} else if (window.location.origin === 'http://localhost:8080') {
+    window.apiRoute = 'http://localhost:8000/api/';
+} else {
+    window.apiRoute = 'http://localhost:8000/api/';
 }
 
 //Validate
 import * as VeeValidate from 'vee-validate';
 Vue.use(VeeValidate, {
-  errorBagName: 'vErrors'
+    errorBagName: 'vErrors'
 })
 
 import VueTour from 'vue-tour'
@@ -102,8 +102,8 @@ require('@resources/assets/scss/style.scss')
 Vue.config.productionTip = false;
 
 new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App),
+    router,
+    store,
+    i18n,
+    render: h => h(App),
 }).$mount('#app')

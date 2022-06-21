@@ -32,7 +32,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
-            'recaptchaToken' => ['required', new ValidationRecaptcha()]
+            //'recaptchaToken' => ['required', new ValidationRecaptcha()]
         ]);
         
         $credentials = $request->only('email', 'password');

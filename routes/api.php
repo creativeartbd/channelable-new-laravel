@@ -38,7 +38,7 @@ Route::group([], function ($router) {
     Route::put('projects/update/{id}', [App\Http\Controllers\ProjectController::class, 'update'])->name("projects_update");
 
     //Countries
-    Route::get('countries', [App\Http\Controllers\CountryController::class, 'countries'])->name("get_countries");
+    Route::get('countries', [App\Http\Controllers\CountryController::class, 'countries'])->name("countries");
 
     //Currencies
     Route::get('currencies', [App\Http\Controllers\CurrencyController::class, 'currencies'])->name("currencies");

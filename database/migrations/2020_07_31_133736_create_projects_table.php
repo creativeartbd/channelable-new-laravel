@@ -16,7 +16,7 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function($table)
         {
             $table->bigIncrements('id_project');
-            $table->string('name');
+            $table->string('name')->unique();;
             $table->string('website');
             $table->unsignedBigInteger('country_id')->index();
             $table->unsignedBigInteger('currency_id')->index();

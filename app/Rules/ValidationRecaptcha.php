@@ -34,7 +34,7 @@ class ValidationRecaptcha implements Rule
 
         $response = $client->post('siteverify', [
             'query' => [
-                'secret' => '6Lf6VK0UAAAAAOEKeDBNCKq5cHtiytCPk-oW1nv-',
+                'secret' => '6LddYoIgAAAAAB9XbaMqX0J5yztGdOvtrBdzirb9',
                 'response' => $value
             ]
         ]);

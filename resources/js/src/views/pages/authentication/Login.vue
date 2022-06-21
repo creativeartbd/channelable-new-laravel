@@ -47,26 +47,7 @@
             Please sign-in to your account and start the adventure
           </b-card-text>
 
-          <b-alert
-            variant="primary"
-            show
-          >
-            <div class="alert-body font-small-2">
-              <p>
-                <small class="mr-50"><span class="font-weight-bold">Admin:</span> admin@demo.com | admin</small>
-              </p>
-              <p>
-                <small class="mr-50"><span class="font-weight-bold">Client:</span> client@demo.com | client</small>
-              </p>
-            </div>
-            <feather-icon
-              v-b-tooltip.hover.left="'This is just for ACL demo purpose'"
-              icon="HelpCircleIcon"
-              size="18"
-              class="position-absolute"
-              style="top: 10; right: 10;"
-            />
-          </b-alert>
+          
 
           <!-- form -->
           <validation-observer
@@ -138,7 +119,7 @@
                 </validation-provider>
               </b-form-group>
 
-              <b-form-group>
+              <!-- <b-form-group>
                   <vue-recaptcha
                     @verify="verify"
                     :sitekey="sitekey"
@@ -146,7 +127,7 @@
                     ref="recaptcha"
                     rules="required"
                   ></vue-recaptcha>
-              </b-form-group>
+              </b-form-group> -->
               <!-- checkbox -->
               <b-form-group>
                 <b-form-checkbox
@@ -278,8 +259,8 @@ export default {
   data() {
     return {
       status: '',
-      password: 'admin',
-      userEmail: 'admin@demo.com',
+      password: '',
+      userEmail: '',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
 
       // validation rules
@@ -287,10 +268,10 @@ export default {
       email,
 
       captcha: '',
-      pleaseTickRecaptcha: true,
-      sitekey: '6Lf6VK0UAAAAAO4SfLRPyvVK4vbaFQDUY9-gO71C'
+      pleaseTickRecaptcha: false,
+      sitekey: '6LddYoIgAAAAAL82XMqGryvJo7eQRPuZVfWZTEEt'
     }
-  },
+  }, 
   computed: {
     passwordToggleIcon() {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'

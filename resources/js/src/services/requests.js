@@ -1,13 +1,13 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-window.apiUrl = 'http://localhost:8000/api/'
-if(window.location.origin === 'http://gads.advancedplugins.com'){
-  window.apiUrl = 'http://gadslaravel.advancedplugins.com/api/'
-}else if (window.location.origin === 'http://localhost:8080') {
-  window.apiUrl = 'http://localhost:8000/api/'
-}else{
-  window.apiUrl = 'http://localhost:8000/api/'
+window.apiUrl = 'http://localhost:3000/api/'
+if (window.location.origin === 'https://channelable.shibbir.dev/') {
+    window.apiUrl = 'https://channelable.shibbir.dev/api/'
+} else if (window.location.origin === 'http://localhost:3000') {
+    window.apiUrl = 'http://localhost:3000/api/'
+} else {
+    window.apiUrl = 'http://localhost:3000/api/'
 }
 
 export const http = {
@@ -16,7 +16,7 @@ export const http = {
             let header = {
                 'Authorization': `Bearer ${Cookies.get("jwt-token")}`
             };
-            axios.get(window.apiUrl + url, {headers: header}).then(response => {
+            axios.get(window.apiUrl + url, { headers: header }).then(response => {
                 resolve(response);
             }).catch(e => {
                 reject(e)
@@ -28,7 +28,7 @@ export const http = {
             let header = {
                 'Authorization': `Bearer ${Cookies.get("jwt-token")}`
             };
-            axios.post(window.apiUrl + url, data, {headers: header}).then(response => {
+            axios.post(window.apiUrl + url, data, { headers: header }).then(response => {
                 resolve(response);
             }).catch(e => {
                 reject(e)
@@ -40,7 +40,7 @@ export const http = {
             let header = {
                 'Authorization': `Bearer ${Cookies.get("jwt-token")}`
             };
-            axios.put(window.apiUrl + url, data, {headers: header}).then(response => {
+            axios.put(window.apiUrl + url, data, { headers: header }).then(response => {
                 resolve(response);
             }).catch(e => {
                 reject(e)
@@ -52,7 +52,7 @@ export const http = {
             let header = {
                 'Authorization': `Bearer ${Cookies.get("jwt-token")}`
             };
-            axios.delete(window.apiUrl + url, {headers: header}).then(response => {
+            axios.delete(window.apiUrl + url, { headers: header }).then(response => {
                 resolve(response);
             }).catch(e => {
                 reject(e)
@@ -65,7 +65,7 @@ export const http = {
                 'Authorization': `Bearer ${Cookies.get("jwt-token")}`,
                 'Content-Type': 'multipart/form-data'
             };
-            axios.post(apiUrl + url, data, {headers: header}).then(response => {
+            axios.post(apiUrl + url, data, { headers: header }).then(response => {
                 resolve(response);
             }).catch(e => {
                 reject(e)

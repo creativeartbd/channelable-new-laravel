@@ -3,6 +3,20 @@ export default [
     header: 'Apps & Pages',
   },
   {
+    title: 'Projects',
+    icon: 'FileTextIcon',
+    children: [
+      {
+        title: 'Add Project',
+        route: 'add-project',
+      },
+      {
+        title: 'All Projects',
+        route: 'all-projects',
+      },
+    ],
+  },
+  {
     title: 'Email',
     route: 'apps-email',
     icon: 'MailIcon',
